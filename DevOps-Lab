@@ -346,14 +346,13 @@ git --version
 
 # Download the Java code we are going to use in the CICD pipeline
 # wget https://devops-e-e.s3.ap-south-1.amazonaws.com/hello-world-master.zip
-wget https://hsbctraining.s3.us-east-2.amazonaws.com/hello-world-master.zip
-unzip hello-world-master.zip
+#wget https://hsbctraining.s3.us-east-2.amazonaws.com/hello-world-master.zip
+#unzip hello-world-master.zip
+mkdir hello-world
+cd hello-world
+git init
+git pull https://github.com/martuj/devops-hello-world.git
 ls
-rm hello-world-master.zip
-cd hello-world-master
-ls
-
-git init .
 
 # Check the email and user name configured.
 git config user.email
