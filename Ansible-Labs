@@ -775,7 +775,7 @@ $ ssh ec2-user@< managed_node_private_ip >
 
 $ rpm -qa | grep httpd
 
-ansible all -m "command" -a "rpm -qa | grep httpd"
+ansible all -m "shell" -a "rpm -qa | grep httpd"   # | pipe doesnt work with command module use shell or raw module
 
 ================================================================================================
 Task 4: Until function
