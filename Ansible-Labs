@@ -993,6 +993,172 @@ $ ansible-playbook blklab.yml
 
 ================================================================================================
 ############################################################################################
+Task 7.1: Implementing Jinja2 template
+############################################################################################
+
+# create directory
+
+mkdir jinja2-playbooks
+
+
+[ec2-user@Control-Node jinja2-playbooks]$ tree
+.
+├── playbook1.yml
+├── playbook2.yml
+├── playbook3.yml
+├── playbook4.yml
+├── playbook5.yml
+├── templates
+│   ├── filter_demo.j2
+│   ├── firewall.conf.j2
+│   ├── hosts.j2
+│   └── httpd.conf.j2
+└── vars
+    ├── vars1.yml
+    └── vars2.yml
+
+
+vi  playbook1.yml
+
+- name: Generate httpd config using Jinja2
+  hosts: localhost
+  gather_facts: no
+  vars_files:
+    - vars/vars1.yml
+  tasks:
+    - name: Render httpd config template
+      template:
+        src: templates/httpd.conf.j2
+        dest: /tmp/httpd.conf
+
+vi  playbook2.yml
+
+- name: Create users with loop
+  hosts: localhost
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: Create multiple users
+      user:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - alice
+        - bob
+        - charlie
+
+vi playbook3.yml
+
+- name: Conditional firewall config generation
+  hosts: localhost
+  gather_facts: no
+  vars_files:
+    - vars/vars2.yml
+  tasks:
+    - name: Generate firewall config
+      template:
+        src: templates/firewall.conf.j2
+        dest: /tmp/firewall_script.sh
+
+vi playbook4.yml
+
+- name: Demonstrate Jinja2 filters
+  hosts: localhost
+  gather_facts: no
+  vars:
+    email: DevOps@Example.com
+  tasks:
+    - name: Render filter demo
+      template:
+        src: templates/filter_demo.j2
+        dest: /tmp/filter_output.txt
+
+vi playbook5.yml
+
+- name: Generate Ansible hosts file using Jinja2 loop
+  hosts: localhost
+  gather_facts: no
+  vars:
+    web_servers:
+      - web1.example.com
+      - web2.example.com
+      - web3.example.com
+  tasks:
+    - name: Generate hosts file
+      template:
+        src: templates/hosts.j2
+        dest: /tmp/ansible_hosts
+
+
+# Under template directory 
+--------------------
+
+vi  templates/filter_demo.j2
+
+Original: {{ email }}
+Lowercase: {{ email | lower }}
+Replaced: {{ email | replace('@', '_at_') }}
+Default if undefined: {{ undefined_var | default("N/A") }}
+
+vi  templates/firewall.conf.j2
+
+{% if firewall_enabled %}
+firewall-cmd --permanent --add-service=httpd
+{% else %}
+echo "Firewall is disabled"
+{% endif %}
+
+vi  templates/hosts.j2
+
+[web_servers]
+{% for host in web_servers %}
+{{ host }}
+{% endfor %}
+
+vi  templates/httpd.conf.j2
+
+server {
+    listen 80;
+    server_name {{ domain_name }};
+    root {{ web_root }};
+}
+
+# under Vars directory
+-----------------------------
+
+vi  vars/vars1.yml
+
+domain_name: example.com
+web_root: /var/www/html
+
+vi  vars/vars2.yml
+
+firewall_enabled: true
+
+
+# Run all the playbook
+-------------------
+ansible-playbook playbook1.yml
+ansible-playbook playbook2.yml
+ansible-playbook playbook3.yml
+ansible-playbook playbook4.yml
+ansible-playbook playbook5.yml
+
+# output should be 
+-----------------------
+[ec2-user@Control-Node jinja2-playbooks]$ ls -l /tmp/
+total 16
+-rw-r--r--. 1 ec2-user ec2-user  66 Jun 15 07:55 ansible_hosts
+-rw-r--r--. 1 ec2-user ec2-user 118 Jun 15 07:55 filter_output.txt
+-rw-r--r--. 1 ec2-user ec2-user  46 Jun 15 07:55 firewall_script.sh
+-rw-r--r--. 1 ec2-user ec2-user  80 Jun 15 07:55 httpd.conf
+
+
+
+
+================================================================================================
+
+############################################################################################
 Task 8: Implementing Ansible Roles
 ############################################################################################
 
