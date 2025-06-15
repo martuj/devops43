@@ -1153,8 +1153,29 @@ total 16
 -rw-r--r--. 1 ec2-user ec2-user  46 Jun 15 07:55 firewall_script.sh
 -rw-r--r--. 1 ec2-user ec2-user  80 Jun 15 07:55 httpd.conf
 
+[ec2-user@Control-Node jinja2-playbooks]$ cat /tmp/ansible_hosts
+[web_servers]
+web1.example.com
+web2.example.com
+web3.example.com
 
+[ec2-user@Control-Node jinja2-playbooks]$ cat /tmp/filter_output.txt
+Original: DevOps@Example.com
+Lowercase: devops@example.com
+Replaced: DevOps_at_Example.com
+Default if undefined: N/A
 
+[ec2-user@Control-Node jinja2-playbooks]$ cat /tmp/httpd.conf
+server {
+    listen 80;
+    server_name example.com;
+    root /var/www/html;
+}
+
+[ec2-user@Control-Node jinja2-playbooks]$ cat /tmp/firewall_script.sh
+firewall-cmd --permanent --add-service=httpd
+
+[ec2-user@Control-Node jinja2-playbooks]$
 
 ================================================================================================
 
