@@ -611,6 +611,69 @@ vi third.yaml
 Now run the third file
 
 ansible-playbook third.yaml
+=======================================================================
+Lab:2. Working with Facts
+-------------------------------------------------------------------------
+1.Display All Ansible Facts of a Host
+------------------------------------------
+vi show-fact.yml
+
+---
+- name: Display all Ansible facts
+  hosts: all
+  gather_facts: yes
+  tasks:
+    - name: Show all Ansible facts
+      debug:
+        var: ansible_facts
+
+# save the file
+
+ansible-playbook show-fact.yml
+
+
+2. Get Host IP Address and OS Info
+----------------------------------------------
+vi show-ip-os.yml
+
+---
+- name: Show specific Ansible facts
+  hosts: all
+  gather_facts: yes
+  tasks:
+    - name: Show IP Address
+      debug:
+        msg: "IP Address: {{ ansible_default_ipv4.address }}"
+
+    - name: Show Operating System
+      debug:
+        msg: "OS: {{ ansible_distribution }} {{ ansible_distribution_version }}"
+
+# save the file
+ansible-playbook show-ip-os.yml
+
+3. Conditional Task Based on RAM Size
+-------------------------------------------------------
+vi check-ram.yml
+
+---
+- name: Perform task based on RAM
+  hosts: all
+  gather_facts: yes
+  tasks:
+    - name: Check if RAM is greater than 4GB
+      debug:
+        msg: "Sufficient RAM available"
+      when: ansible_memtotal_mb > 4096
+
+    - name: Warn if RAM is low
+      debug:
+        msg: "Less than 4GB RAM - Consider upgrading"
+      when: ansible_memtotal_mb <= 4096
+
+# save the file
+ansible-playbook check-ram.yml
+
 =================================================================================
 ##########################################################################################
 Task:6
