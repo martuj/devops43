@@ -674,6 +674,32 @@ vi check-ram.yml
 # save the file
 ansible-playbook check-ram.yml
 
+4. Playbook 2 Alternate: Fail When Disk Usage Exceeds 80%
+----------------------------------------------------------
+vi disk_check.yml
+
+---
+- hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Get disk usage of root partition
+      shell: "df -h / | tail -1 | awk '{print $5}' | sed 's/%//g'"
+      register: disk_usage
+      changed_when: false
+
+    - name: Show current disk usage
+      debug:
+        msg: "Disk usage is {{ disk_usage.stdout }}%"
+
+    - name: Fail if disk usage is above 80%
+      debug:
+        msg: "Disk space is under control."
+      failed_when: disk_usage.stdout | int > 80
+
+# save the file
+#  If disk usage is greater than 80%, the task is marked as failed using failed_when.
+ansible-playbook disk_check.yml
+
 =================================================================================
 ##########################################################################################
 Task:6
