@@ -597,6 +597,7 @@ vi third.yaml
       name: [wget, curl]
       state: present
     register: out
+    ignore_errors: yes     # This allows playbook to continue even if this task fails
 
   - name: list result of previous task
     debug:
