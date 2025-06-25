@@ -326,4 +326,12 @@ cat /var/jenkins_home/secrets/initialAdminPassword
 http://54.173.143.23:8080/
 http://public-ip-ofinstance:8080/
 
+Lab:3- install prometheus
+------------------------
+docker run -d -u root --name prometheus -p 9090:9090 -v prometheus_config:/etc/prometheus prom/prometheus
+
+go to web browser and access the prometheus web UI
+
+http://3.110.207.70:9090
+
 
