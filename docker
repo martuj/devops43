@@ -284,3 +284,54 @@ Task 4: Create a container with tmpfs mount and verify it
 
 docker run -d -it --name tmpmount --mount type=tmpfs,destination=/app nginx:latest
 docker container inspect tmpmount
+
+Exercise 2: Install Jenkins using Docker Image
+
+Task:1 Install Jenkins using Docker Image
+==========================================
+
+sudo mkdir  /jenkins_home
+sudo chmod 777 /jenkins_home
+ls  -ld  /jenkins_home
+
+install the Jenkins using the below command
+==============================================
+
+sudo docker run -d -t -p 8080:8080 -p 50000:50000 -v /jenkins_home:/var/jenkins_home  jenkins/jenkins:lts-jdk11
+ 
+
+description of command
+----------------------
+• -p port maping 8080 -for Jenkins
+• -d port run the container in background.
+• -t docker to keep the container running.
+• -p maping 50000  -for agents 
+• -v  volume for storing data locally i.e /jenkins_home need to be created
+• /var/jenkins_home maping to local dir
+• Jenkins:lts-jdk11 -image and tag
+
+Run the below command to get the container ID
+------------------------------------
+sudo docker ps
+
+
+
+###############################
+Task2 : Configure Jenkins
+###############################
+
+
+Now login into the Jenkins  container using below command and get the 
+password for Jenkins server using cat command and path.
+---------------------------------------------
+
+sudo docker exec -it containerid /bin/bash
+
+cat /var/jenkins_home/secrets/initialAdminPassword
+ 
+
+# Now, go to the browser and enter Jenkins URL 
+http://54.173.143.232:8080/
+http://public-ip-ofinstance:8080/
+
+
