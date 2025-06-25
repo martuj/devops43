@@ -285,7 +285,7 @@ Task 4: Create a container with tmpfs mount and verify it
 docker run -d -it --name tmpmount --mount type=tmpfs,destination=/app nginx:latest
 docker container inspect tmpmount
 
-Exercise 2: Install Jenkins using Docker Image
+Exercise 4: Install Jenkins using Docker Image
 =====================================================
 Task:1 Install Jenkins using Docker Image
 ==========================================
