@@ -195,6 +195,7 @@ docker push <replace your dockerhub account name>/ct-wordpress:v1
 
 docker image ls
 docker image rm <replace your dockerhub account name>/ct-wordpress:v1 ct-wordpress:v1
+# docker image rm -f martuj123/ct-wordpress:v1 ct-wordpress:v1
 docker run -d -p 8080:80 <replace your dockerhub account name>/ct-wordpress:v1
 docker stop < replace container id/name >
 docker container rm < replace container id/name >
