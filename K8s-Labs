@@ -46,7 +46,7 @@ LAB-2 creating pod
 ================================
 Task-1  Imperative method
 ----------
- kubectl run test --image=nginx:latest --port 80
+ kubectl run test --image=nginx:latest
 
 kubectl get pod
 alias k=kubectl
